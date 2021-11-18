@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <math.h>
+#include <time.h>
 #include <windows.h>
 
 #include "characters.h"
@@ -10,12 +10,16 @@
 #include "stage.h"
 #include "DragonBall.h"
 #include "Track.h"
+#include "cloud.h"
 
 
 
 #define LEFT 75
 #define RIGHT 77
 #define JUMPHEIGHT -7
+
+//특수구름 낱개 출력
+
 
 
 //초기 화면 설정
@@ -30,7 +34,7 @@ void initPlayer(player* p)
 {
 	p->x = 56;
 	p->y = 32;
-	p->life = 10;
+	p->life = 3;
 	p->totalBalls = 0;
 	p->balls = 0;
 	p->stageNum = 0;
@@ -153,20 +157,11 @@ void deletePlayer(player* p, int stage[][60])
 	int posX = OriginX + (p->x * 2);
 	int posY = OriginY + p->y;
 	SetCurrentCursorPos(posX, posY++);								//해당 부분 다시 맵과 비교해서 복구
-	if (stageArr[p->stageNum][p->y][p->x] == 0)
-		printf("  "); 
-	else if (stageArr[p->stageNum][p->y][p->x] % 2 == 0)
-		printf("◎");
+	recoverCloud(p->x, p->y, stage);
 	SetCurrentCursorPos(posX, posY++);
-	if (stageArr[p->stageNum][p->y + 1][p->x] == 0)
-		printf("  ");
-	else if (stageArr[p->stageNum][p->y + 1][p->x] % 2 == 0)
-		printf("◎");
+	recoverCloud(p->x, p->y + 1, stage);
 	SetCurrentCursorPos(posX, posY);
-	if (stageArr[p->stageNum][p->y + 2][p->x] == 0)
-		printf("  ");
-	else if (stageArr[p->stageNum][p->y + 2][p->x] % 2 == 0)
-		printf("◎");
+	recoverCloud(p->x, p->y + 2, stage);
 }
 
 //void drawNPC(NPC* npc)
@@ -202,52 +197,29 @@ void UpdateRecord(player* p)
 	printf("좌우 이동 <- -> 방향키");
 }
 
-//void recoverCloud(player* p, int stage[][60])
-//{
-//	int i, j;
-//	int curX, curY;
-//	int startX = p->x - 8 < 0 ? 0 : p->x - 8;
-//	int startY = p->y - 8 < 0 ? 0 : p->y - 8;
-//	int limitY = p->y + 2 >= stage1Y ? stage1Y - 1 : p->y + 2;
-//	int limitX = p->x + 8 >= stage1X ? stage1X - 1 : p->x + 8;
-//
-//	for (i = startY; i < limitY; i++)
-//	{
-//		for (j = startX; j < limitX; j++)
-//		{
-//			curX = j * 2 + OriginX;
-//			curY = i + OriginY;
-//			SetCurrentCursorPos(curX, curY);
-//			if (stage[i][j] == 2)
-//				printf("◎");
-//		}
-//	}
-//}
-//
-//void redraw() {
-//	
-//}
-
 int detectColl(int x, int y, int stage[][60])
 {
 	if (y < 0) y = 0;
-	if (stage[y][x] == -1 || stage[y + 1][x] == -1 || stage[y + 2][x] == -1) //바닥에 추락
+
+	if (stage[y][x] != 0 && (stage[y][x] % 11 == 0 || stage[y + 1][x] % 11 == 0 || stage[y + 2][x] % 11 == 0)) //바닥에 추락
 		return -1;
-	else if (stage[y][x] == 0 && stage[y + 1][x] == 0 && stage[y + 2][x] == 0) //방해물 x
-		return 0;
-	else if (stage[y][x] == 2 || stage[y + 1][x] == 2 || stage[y + 2][x] == 2) //구름과 겹쳐진 상태
-		return 1;
-	else if (stage[y][x] == 1 || stage[y + 1][x] == 1 || stage[y + 2][x] == 1) //벽면 충돌
+	else if (stage[y][x] == 0 || stage[y + 1][x] == 0 || stage[y + 2][x] == 0) //벽면 충돌
 		return 2;
+	else if (stage[y][x] == 1 && stage[y + 1][x] == 1 && stage[y + 2][x] == 1) //방해물 x
+		return 0;
+	//else if (stage[y][x] == 2 || stage[y + 1][x] == 2 || stage[y + 2][x] == 2) //구름과 겹쳐진 상태
+	//	return 1;
+	else
+		return 1;
 }
 
 int jumpColl(int x, int y, int stage[][60])
 {
-	if (stage[y][x] != 0) //발이 구름
+	if (stage[y][x] != 1) //발이 구름
 		return 3;
-	if (stage[y + 1][x] != 0) //몸이 구름
+	if (stage[y + 1][x] != 1) //몸이 구름
 		return 2;
-	if (stage[y + 2][x] != 0) //머리가 구름
+	if (stage[y + 2][x] != 1) //머리가 구름
 		return 1;
 	return 0;
 }
@@ -382,10 +354,8 @@ void deleteNpc(NPC *npc, int stageNum) {
 	int posX = OriginX + (npc->x * 2);
 	int posY = OriginY + npc->y;
 	SetCurrentCursorPos(posX, posY);
-
-	if (stageArr[stageNum][npc->y][npc->x] == 2)
-		printf("◎");
-	else printf("  ");
+	recoverCloud(npc->x, npc->y, stageArr[stageNum]);
+	
 }
 void drawNpc(NPC *npc) {
 	int posX = OriginX + (npc->x * 2);
@@ -427,6 +397,9 @@ int checkStageDoor(player* p, StageDoor *std, int stageNum) {
 }
 
 
+//특수 구름 출력, 움직임
+
+
 
 int main()
 {
@@ -435,7 +408,9 @@ int main()
 	DragonBall dgb[7];
 	DragonBall dgball[3][3];
 	StageDoor stageDoor[3];
-	 
+	cloud sCloud[5];
+	
+	srand(NULL);
 
 	npc.x = 1, npc.y = 1;     //기본 값
 	int jump = JUMPHEIGHT;
@@ -450,6 +425,7 @@ int main()
 	setDragonBallPos(dgball);
 
 	initNPC(&npc, 1, 1);
+	initSpecialCloud(sCloud, 5);
 	printCloud(stageArr[p.stageNum], dgball[p.stageNum]);
 	drawPlayer(&p);
 	UpdateRecord(&p);
@@ -458,18 +434,37 @@ int main()
 	setStageDoor(stageDoor);
 	printStageDoor(stageDoor, stageArr[p.stageNum], p.stageNum);
 
+	for (int i = 0; i < 5; i++)			//구름 출력
+		drawSpecialCloud(&sCloud[i], stageArr[p.stageNum]);
 
 	while (1)
 	{	
 		if (isGameOver(&p))
 			break;
 
+		if (count % 5 == 0)
+		{
+			for (int i = 0; i < 5; i++)
+				deleteSpecialCloud(&sCloud[i], stageArr[p.stageNum]);
+
+			for (int i = 0; i < 5; i++)
+				moveCloud(&sCloud[i], stageArr[p.stageNum]);
+
+			for (int i = 0; i < 5; i++)
+				drawSpecialCloud(&sCloud[i], stageArr[p.stageNum]);
+		}
+
+
+		//플레이어 이동
+
 		jumpFlag = playerJump(&p, &jump, stageArr[p.stageNum]);
 		count++;
 
 
-		if (jumpFlag == 1) //
-			jump = JUMPHEIGHT;
+		if (jumpFlag == 1) //점프 완료 후 재점프 
+		{
+			jump = collSpecialCloud(sCloud, &p, stageArr[p.stageNum]);
+		}
 		else if (jumpFlag == -1) //추락한 경우
 		{
 			//npc 삭제해주고 위치 재설정
@@ -486,6 +481,7 @@ int main()
 			UpdateRecord(&p);
 		if (checkStageDoor(&p, stageDoor, p.stageNum)) { //드래곤볼 전부 모으고 and 문 앞에 서 있으면 다음 스테이지로 이동
 			gotoNextStage(&p, dgball, stageDoor);
+			initSpecialCloud(sCloud, 5);
 		}
 
 		processKeyInput(&p, stageArr[p.stageNum]);
@@ -504,6 +500,7 @@ int main()
 		//	updateNpcPos(&p, &npc);
 		//	drawNpc(&npc);
 		//}
+
 	}
 
 	SetCurrentCursorPos(0, 0);
