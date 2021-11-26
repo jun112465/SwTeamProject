@@ -6,6 +6,7 @@
 #include "NextStage.h"
 #include "StartScreen.h"
 #include "cloud.h"
+#include "Item.h"
 
 int main()
 {
@@ -50,9 +51,9 @@ int main()
 		drawSpecialCloud(&sCloud[i], stageArr[p.stageNum]);
 
 	//아이템 관련
-	int speed1 = 10, speed2 = 30;
-	/*item item[50];
-	InititemBox(item);*/
+	int speed1 = 30, speed2 = 50;
+	item item[50];
+	InititemBox(speed1, speed2);
 
 	while (1)
 	{
@@ -100,6 +101,7 @@ int main()
 			p.stageNum++;
 			gotoNextStage(&p, dgball, stageDoor, stageArr[p.stageNum]);
 			initSpecialCloud(sCloud, 5);
+			InititemBox(speed1, speed2);
 		}
 
 		processKeyInput(&p, stageArr[p.stageNum]);
@@ -108,7 +110,7 @@ int main()
 		//플레이어 움직인 후 npc이동 시작
 		//추적 알고리즘 시작
 		//2개의 NPC가 플레이어를 특정 거리 이하 일 때 추적
-		for (int i = 0; i < 2; i++) {
+		/*for (int i = 0; i < 2; i++) {
 			addNpcCnt(&n[i]);
 			int dis = getDistance(p.x - n[i].x, p.y - n[i].y);   //캐릭터와 npc사이의 거리
 			if (dis <= 1) {  //최소 거리 루트2 이하이면 끝내기.
@@ -121,12 +123,11 @@ int main()
 				updateNpcPos(&p, &n[i]);
 				drawNpc(&n[i]);
 			}
-		}
+		}*/
 	
 
 		//캐릭터, npc 이후 아이템
-	/*	CreateItem(item, speed1, speed2);
-		Fallitem(item, &p);*/
+		Fallitem(&p, stageArr[p.stageNum]);
 	}
 
 	
