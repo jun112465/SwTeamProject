@@ -122,7 +122,7 @@ void func_item(int itemNum, player *p, int stage[][60])
         p->x = (OriginX + stage1X) / 2; p->y = (OriginY + stage1Y) / 2;
         drawPlayer(p);
     }
-    else if(itemNum == 23)     //기능 또 뭐 추가???
+    //else if(itemNum == 23)     //기능 또 뭐 추가???
 }
 
 
