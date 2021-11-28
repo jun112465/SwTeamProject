@@ -65,7 +65,7 @@ void Fallitem(player* p, int stage[][60])
         {
             // 아이템 활성화
             func_item(it[i].itemNum, p, stage);   //itemNum 인덱스에 해당하는 기능 수행.
-            printf("%d", p->life);
+           // printf("%d", p->life);
         }
 
         if (it[i].flag == 1 && --it[i].life == 0)   //해당 인덱스에 아이템 있으면 움직임 실행, 현재 아이템 인덱스의 대기시간 턴제로 줄이면서 자신의 순서 기다림
