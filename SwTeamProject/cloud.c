@@ -122,7 +122,7 @@ void initSpecialCloud(cloud* cloudArray, int size, DragonBall dgb[], player* p)
 		cloudArray[i].x = rand() % (59 - cloudArray[i].size) + 1;
 		cloudArray[i].y = rand() % 37 + 2;
 		cloudArray[i].vis = 1;
-		if (cloudArray[i].x <= p->spawnPos[p->stageNum][0] && cloudArray[i].x >= p->spawnPos[p->stageNum][0])
+		if (cloudArray[i].x >= p->spawnPos[p->stageNum][0] && cloudArray[i].x+cloudArray[i].size <= p->spawnPos[p->stageNum][0])
 		{
 			if (cloudArray[i].y <= p->spawnPos[p->stageNum][1] - 1 && cloudArray[i].x >= p->spawnPos[p->stageNum][1] + 8)
 				cloudArray[i].y += 10;
