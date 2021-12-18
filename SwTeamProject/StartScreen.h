@@ -11,3 +11,4 @@ int getKeyInput(void);
 
 void printEndScreen(void);
 void gameClearScreen(void);
+void GameExplanation(void);

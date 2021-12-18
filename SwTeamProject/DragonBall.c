@@ -16,7 +16,7 @@ void setDragonBallPos(DragonBall dgb[][3]) {
 	dgb[1][0].y = 10;
 	dgb[1][0].get = 0;
 	dgb[1][1].x = 34;
-	dgb[1][1].y = 9;
+	dgb[1][1].y = 8;
 	dgb[1][1].get = 0;
 	dgb[1][2].x = 1000;
 	dgb[1][2].y = 1000;
@@ -50,7 +50,6 @@ int dragonBallGet(player *p, DragonBall *dgb, int stage[][60]) {
 
 void printDragonBall() {
 
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);		//³ë¶û»ö
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);		//»¡°­
 	printf("¡Ü");
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);		//Èò»ö
 }

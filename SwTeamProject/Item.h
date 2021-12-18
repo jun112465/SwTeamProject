@@ -19,5 +19,5 @@ int Detectitem(player* p, int i, int stage[][60]);
 void Fallitem(player* p, int stage[][60], NPC* npc, cloud* cloudArr, int CloudSize, zone* z);
 void showItem(int num);
 void deleteItem(int i, int stage[][60]);
-void func_item(int itemNum, player* p, int stage[][60], NPC* npc, cloud* CloudArr, int CloudSize, zone* z);
+void func_item(int itemNum, player* p, int stage[][60], NPC* npc, cloud* CloudArr, int CloudSize, zone* z, int difficulty, int* npcNum);
 void InitPosition(item* item);
