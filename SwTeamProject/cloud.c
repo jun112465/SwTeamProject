@@ -1,4 +1,4 @@
-#include "cloud.h"21
+#include "cloud.h"
 
 
 void recoverCloud(int x, int y, int stage[][60])
