@@ -286,6 +286,7 @@ void printBlinkCloud()
 
 void printNormalCloud()
 {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
 	printf("¡Ý");
 }
 

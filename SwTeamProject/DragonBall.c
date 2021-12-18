@@ -50,6 +50,6 @@ int dragonBallGet(player *p, DragonBall *dgb, int stage[][60]) {
 
 void printDragonBall() {
 
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);		//»¡°­
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);		//»¡°­
 	printf("¡Ü");
 }
