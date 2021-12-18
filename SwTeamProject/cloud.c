@@ -125,7 +125,7 @@ void initSpecialCloud(cloud* cloudArray, int size, DragonBall dgb[], player* p)
 		if (cloudArray[i].x >= p->spawnPos[p->stageNum][0] && cloudArray[i].x + cloudArray[i].size <= p->spawnPos[p->stageNum][0])
 		{
 			if (cloudArray[i].y <= p->spawnPos[p->stageNum][1] - 1 && cloudArray[i].x >= p->spawnPos[p->stageNum][1] + 8)
-				cloudArray[i].y += 10;
+				cloudArray[i].y -= 10;
 		}
 
 		if (cloudArray[i].movement == 0)
